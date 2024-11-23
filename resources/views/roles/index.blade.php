@@ -2,7 +2,9 @@
 
 @section('content')
     <h1>Roles</h1>
-    <a href="{{ route('roles.create') }}">Create Role</a>
+    @if(auth()->user()->hasPermission('create-role'))
+        <a href="{{ route('roles.create') }}">Create Role</a>
+    @endif
     <ul>
         @foreach ($roles as $role)
             <li>

@@ -6,12 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Traits\HasPermissions;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasPermissions;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -64,8 +63,6 @@ class User extends Authenticatable
 
     public function hasPermission($permission)
     {
-        return $this->permissions()->where('name', $permission)->exists() || $this->roles()->whereHas('permissions', function ($query) use ($permission) {
-            $query->where('name', $permission);
-        })->exists();
+        return $this->permissions()->where('name', $permission)->exists();
     }
 }

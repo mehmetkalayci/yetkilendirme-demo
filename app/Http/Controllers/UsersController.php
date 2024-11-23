@@ -7,9 +7,18 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Routing\Controller as BaseController;
 
-class UserController extends Controller
+class UsersController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-user')->only(['create', 'store']);
+        $this->middleware('permission:edit-user')->only(['edit', 'update']);
+        $this->middleware('permission:delete-user')->only(['destroy']);
+    }
+
     public function create()
     {
         $roles = Role::all(); // Tüm rolleri al
